@@ -1,14 +1,11 @@
 import * as constants from '../constants/user'
-import axios from '../utils/requestHandler'
+import * as API from '../utils/api'
 
 export const loadUser = data => dispatch => {
-    axios({
-        url: `users/${data.id}`,
-        method: 'GET'
-    }, reponse => {
+    return API.fetchUser(data).then(response => {
         dispatch({
             type: constants.LOAD_USER,
-            data: reponse
+            data: response
         })
     })
 }
@@ -18,11 +15,7 @@ export const resetInfo = data => ({
 })
 
 export const updateName = data => dispatch => {
-    axios({
-        url: `users/${data.id}`,
-        method: 'PUT',
-        data: data
-    }, response => {
+    return API.updateName(data).then(response => {
         dispatch({
             type: constants.UPDATE_USER,
             data
@@ -31,10 +24,7 @@ export const updateName = data => dispatch => {
 }
 
 export const deleteUser = data => dispatch => {
-    axios({
-        url: `users/${data.id}`,
-        method: 'DELETE'
-    }, response => {
+    return API.deleteUser(data).then(response => {
         dispatch({
             type: constants.DELETE_USER,
             data
