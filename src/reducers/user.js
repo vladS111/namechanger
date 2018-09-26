@@ -17,7 +17,7 @@ export default (state = defaultState, action) => {
                 info: data
             }
 
-        case constants.UPDATE_NAME:
+        case constants.UPDATE_USER:
             return {
                 ...state,
                 isUpdated: true

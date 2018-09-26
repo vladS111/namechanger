@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import throwMessage from '../../utils/throwMessage'
 import { loadUser, resetInfo, updateName } from '../../actions/user'
+import { loadUsers } from '../../actions/names'
 import LoadingMessage from '../common/LoadingMessage'
 import UserInfo from './UserInfo'
 
@@ -14,7 +15,10 @@ class UserContainer extends Component {
     
     componentWillMount() {
         const { router: { route: { match: { params: { id } } } } } = this.context
-        const { loadUser } = this.props
+        const { loadUser, loadUsers, isUsersLoaded } = this.props
+        if (!isUsersLoaded) {
+            loadUsers()
+        }
         loadUser({ id })
     }
 
@@ -34,8 +38,8 @@ class UserContainer extends Component {
     }
     
     render() {
-        const { isLoaded, info, updateName } = this.props
-        if (!isLoaded) {
+        const { isInfoLoaded, isUsersLoaded, info, updateName } = this.props
+        if (!isInfoLoaded || !isUsersLoaded) {
             return <LoadingMessage />
         }
 
@@ -50,23 +54,20 @@ class UserContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-    isLoaded: state.user.isLoaded,
+    isInfoLoaded: state.user.isLoaded,
+    isUsersLoaded: state.names.isLoaded,
     isUpdated: state.user.isUpdated,
     info: state.user.info,
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadUser(data) {
-        dispatch(loadUser(data))
-    },
+    loadUser: (data) => dispatch(loadUser(data)),
 
-    resetInfo(data) {
-        dispatch(resetInfo(data))
-    },
+    loadUsers: (data) => dispatch(loadUsers(data)),
 
-    updateName(data) {
-        dispatch(updateName(data))
-    }
+    resetInfo: (data) => dispatch(resetInfo(data)),
+
+    updateName: (data) => dispatch(updateName(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)

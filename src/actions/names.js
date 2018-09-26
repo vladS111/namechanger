@@ -12,7 +12,3 @@ export const loadUsers = data => dispatch => {
         })
     })
 }
-
-export const resetInfo = data => ({
-    type: constants.RESET_INFO
-})

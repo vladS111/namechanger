@@ -17,7 +17,27 @@ export const resetInfo = data => ({
     type: constants.RESET_INFO
 })
 
-export const updateName = data => ({
-    type: constants.UPDATE_NAME,
-    data
-})
+export const updateName = data => dispatch => {
+    axios({
+        url: `users/${data.id}`,
+        method: 'PUT',
+        data: data
+    }, response => {
+        dispatch({
+            type: constants.UPDATE_USER,
+            data
+        })
+    })
+}
+
+export const deleteUser = data => dispatch => {
+    axios({
+        url: `users/${data.id}`,
+        method: 'DELETE'
+    }, response => {
+        dispatch({
+            type: constants.DELETE_USER,
+            data
+        })
+    })
+}

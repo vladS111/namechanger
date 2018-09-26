@@ -1,32 +1,21 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import Button from '../common/Button'
-import IconButton from '../common/IconButton'
+import UserItem from './UserItem'
 
-export default ({ list }) => (
+export default ({ list, deleteUser }) => (
     <Fragment>
         <Title>Name</Title>
         <List>
-            {list.map(({ id, name }) => (
-                <Item key={id}>
-                    <Section textAlign='right'>
-                        <Name>{name}</Name>
-                    </Section>
-                    <Section textAlign='center'>
-                        <Link to={`/users/${id}`}>
-                            <Button
-                                label='Change'
-                            />
-                        </Link>
-                    </Section>
-                    <Section textAlign='left'>
-                        <IconButton onClick={() => alert('User is deleted')}>
-                            <Icon src={require('../../assets/icons/delete.svg')} />
-                        </IconButton>
-                    </Section>
-                </Item>
+            {list.map((user) => (
+                <UserItem
+                    key={user.id}
+                    user={user}
+                    deleteUser={deleteUser}
+                />
             ))}
+            {!list.length && (
+                <Message>The list is empty</Message>
+            )}
         </List>
     </Fragment>
 )
@@ -41,25 +30,6 @@ const List = styled.ul`
     list-style: none;
 `
 
-const Item = styled.li`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 10px;
-    &:last-child {
-        margin-bottom: 0;
-    }
-`
-
-const Name = styled.span`
-    margin-right: 10px;
-`
-
-const Section = styled.div`
-    text-align: ${props => props.textAlign};
-    min-width: 100px;
-`
-
-const Icon = styled.img`
-    vertical-align: middle;
+const Message = styled.p`
+    font-size: 16px;
 `

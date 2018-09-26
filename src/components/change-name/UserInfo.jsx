@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import TextField from '../common/TextField'
 import Button from '../common/Button'
+import throwMessage from '../../utils/throwMessage'
 
 export default class UserInfo extends Component {
 
@@ -12,8 +13,14 @@ export default class UserInfo extends Component {
     submit = event => {
         event.preventDefault()
         const { value } = this.state
-        const { updateName } = this.props
-        updateName(value)
+        const { updateName, info: { id } } = this.props
+        if (!value) {
+            return throwMessage('error', 'The name field is required')
+        }
+        updateName({
+            id,
+            name: value
+        })
     }
 
     handleChange = event => {
